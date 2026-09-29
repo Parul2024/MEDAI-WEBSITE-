@@ -15,6 +15,7 @@ import prescriptionRoutes from "./routes/prescriptionRoutes.js";
 import medicineRoutes from "./routes/medicineRoutes.js";
 import reminderRoutes from "./routes/reminderRoutes.js";
 import wellnessRoutes from "./routes/wellnessRoutes.js";
+import { startReminderScheduler } from "./utils/reminderScheduler.js";
 
 // const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -55,6 +56,7 @@ app.use(express.urlencoded({ extended: true }));
 // -------------------------
 
 connectDB();
+startReminderScheduler();
 
 // -------------------------
 // Static uploads
