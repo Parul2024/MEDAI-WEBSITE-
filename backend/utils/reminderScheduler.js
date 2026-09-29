@@ -30,8 +30,15 @@ const sendReminderEmail = async (user, reminder) => {
 // Runs every minute, checks whether "now" matches any active reminder's time slots.
 export const startReminderScheduler = () => {
   cron.schedule("* * * * *", async () => {
+    
     const now = new Date();
-    const hhmm = now.toTimeString().slice(0, 5); // "HH:MM"
+
+const hhmm = new Intl.DateTimeFormat("en-IN", {
+  timeZone: "Asia/Kolkata",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+}).format(now);
 
     // try {
     //   const dueReminders = await Reminder.find({ active: true, times: hhmm }).populate("user");
