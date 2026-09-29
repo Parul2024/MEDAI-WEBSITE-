@@ -33,11 +33,35 @@ export const startReminderScheduler = () => {
     const now = new Date();
     const hhmm = now.toTimeString().slice(0, 5); // "HH:MM"
 
+    // try {
+    //   const dueReminders = await Reminder.find({ active: true, times: hhmm }).populate("user");
+    //   for (const reminder of dueReminders) {
+    //     if (reminder.endDate && now > reminder.endDate) continue;
+    //     await sendReminderEmail(reminder.user, reminder);
+    //     reminder.lastSentAt = now;
+    //     await reminder.save();
+    //   }
     try {
-      const dueReminders = await Reminder.find({ active: true, times: hhmm }).populate("user");
+      const dueReminders = await Reminder.find({
+        active: true,
+        times: hhmm,
+      }).populate("user");
+
       for (const reminder of dueReminders) {
-        if (reminder.endDate && now > reminder.endDate) continue;
+        if (reminder.endDate && now > reminder.endDate) {
+          continue;
+        }
+
+        // Prevent sending twice in the same minute
+        if (
+          reminder.lastSentAt &&
+          now - reminder.lastSentAt < 60 * 1000
+        ) {
+          continue;
+        }
+
         await sendReminderEmail(reminder.user, reminder);
+
         reminder.lastSentAt = now;
         await reminder.save();
       }
