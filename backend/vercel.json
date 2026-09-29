@@ -12,4 +12,12 @@
       "dest": "api/index.js"
     }
   ]
+  {
+  "crons": [
+    {
+      "path": "/api/reminder-cron",
+      "schedule": "* * * * *"
+    }
+  ]
+}
 }
